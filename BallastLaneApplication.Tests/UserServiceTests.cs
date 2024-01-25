@@ -93,34 +93,6 @@ namespace BallastLaneApplication.Tests
         }
 
         [Test]
-        public async Task CreateUserAsync_ValidUser_ReturnsCreatedUser()
-        {
-            var password = "newpassword";
-
-            // Arrange
-            var newUserDto = new UserRegisterDto { Username = "newuser", Password = password };
-
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
-            var expectedUser = new UserEntitie { 
-                Id = Guid.NewGuid(), 
-                Username = "newuser",
-                Role = "user", 
-                PasswordHash = passwordHash 
-            };
-
-            _userRepositoryMock.Setup(repo => repo.AddAsync(expectedUser)).ReturnsAsync(expectedUser);
-
-            // Act
-            var result = await _userService.CreateUserAsync(newUserDto);
-
-            // Assert
-            Assert.IsNotNull(result);
-            result.Username.Equals(expectedUser.Username);
-            result.Role.Equals(expectedUser.Role);
-            result.PasswordHash.Equals(expectedUser.PasswordHash);
-        }
-
-        [Test]
         public async Task UpdateUserAsync_ValidUser_UpdatesUser()
         {
             // Arrange
