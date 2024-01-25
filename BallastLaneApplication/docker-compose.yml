@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  ballastlaneapplication.api:
+    image: ${DOCKER_REGISTRY-}ballastlaneapplicationapi
+    build:
+      context: .
+      dockerfile: BallastLaneApplication.API/Dockerfile
