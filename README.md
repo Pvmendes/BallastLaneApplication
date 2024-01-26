@@ -4,6 +4,61 @@ This is a technical interview exercise
 
 Ballast Lane Application is a .NET application that allows users to manage tasks and provides user authentication functionality. This project adheres to Clean Architecture principles and utilizes Test-Driven Development (TDD) methodologies.
 
+## Architecture Overview
+
+The Ballast Lane Application is structured following the principles of Clean Architecture, aiming to create a system that is:
+
+- **Independent of Frameworks**: The architecture does not rely on the existence of some library or feature-laden software. This allows you to use such frameworks as tools, rather than having to fit your system into their limited constraints.
+- **Testable**: The business rules can be tested without the UI, database, web server, or any external element.
+- **Independent of UI**: The UI can change easily, without changing the rest of the system. A web UI could be replaced with a console UI, for example, without changing the business rules.
+- **Independent of Database**: You can swap out Oracle or SQL Server for MongoDB or another database. Your business rules are not bound to the database.
+- **Independent of any external agency**: In fact, your business rules simply don’t know anything at all about the outside world.
+
+### Clean Architecture Layers
+
+1. **Domain Layer (Core)**:
+   - Contains all entities, enums, exceptions, interfaces, types, and logic specific to the domain that can be used across the entire application.
+   - Example: `User` and `Task` entities are defined here with their properties and any domain logic.
+
+2. **Application Layer (Services)**:
+   - Contains business logic and application behavior.
+   - Encapsulates and implements all of the use cases of the system.
+   - Coordinates the domain layer objects to perform the actual work of the application.
+   - Example: `UserService` and `TaskService` are part of this layer, implementing interfaces like `IUserService` and `ITaskService`.
+
+3. **Infrastructure Layer**:
+   - Provides concrete implementations for interfaces defined in the domain layer, allowing the application to interact with external concerns like databases, file systems, and web services.
+   - This layer contains the data access logic and can implement repository interfaces from the domain layer.
+   - Example: `UserRepository` and `TaskRepository` provide MongoDB-specific data access functionalities.
+
+4. **Presentation Layer (API)**:
+   - The entry point of the application, where the application interacts with the outside world.
+   - Handles HTTP requests, translates them into actions against the model, and responds with views or data.
+   - Example: `UsersController` and `TasksController` handle incoming HTTP requests, invoke application layer services, and respond with data or views.
+
+### Database Design
+
+- **MongoDB**: A NoSQL database was chosen for its schema flexibility, scalability, and performance, allowing the application to handle a wide variety of data types and structures without the need for predefined schemas.
+- **Schema**: The database schema includes collections like `Users` and `Tasks`, each identified by a unique ID, and includes fields necessary for the respective functionalities.
+
+### API Layer
+
+- **ASP.NET Core Web API**: Used to create RESTful APIs that handle HTTP requests and return responses in JSON format, providing an interface for front-end applications to interact with the back-end.
+- **Endpoints**: A set of endpoints are defined for operations like user authentication and task management (CRUD operations).
+
+### Business Logic Layer
+
+- **Services**: Business logic is encapsulated in services which are responsible for executing specific business actions, ensuring that business rules are adhered to and that the correct data is passed between the API and data layers.
+- **Validation and Business Rules**: Ensures that the data entering the system meets certain criteria and that the system behaves correctly according to the defined business rules.
+
+### Data Layer
+
+- **Repositories**: The data access logic is abstracted behind repository interfaces, allowing for a clean separation between how data is accessed and how it's used in the application.
+- **Data Access**: Data is accessed and manipulated directly through MongoDB's driver, providing a lightweight, flexible approach to data management without the overhead of additional ORM frameworks.
+
+By adopting Clean Architecture principles, the Ballast Lane Application ensures that its core logic is decoupled from external frameworks and databases, making it more maintainable, scalable, and adaptable to change.
+
+
 ## Features
 
 - CRUD operations for managing tasks.
